@@ -17,7 +17,7 @@ import java.sql.SQLException;
 public class MainActivity extends AppCompatActivity {
 
     private EditText editTextId, editTextName, editTextAddress;
-    private Button btnSave, btnGet;
+    private Button btnSave, btnGet, btnUpdate, btnDelete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         editTextAddress = findViewById(R.id.editTextText3);
         btnSave = findViewById(R.id.btn_save);
         btnGet = findViewById(R.id.btn_get);
+        btnUpdate = findViewById(R.id.btn_update);
+        btnDelete = findViewById(R.id.btn_delete);
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +83,58 @@ public class MainActivity extends AppCompatActivity {
                             editTextAddress.setText(address);
                         } else {
                             Log.d("DatabaseQuery", "No record found with the given ID");
+                        }
+                    } else {
+                        Log.d("DatabaseConnection", "Connection failed!");
+                    }
+                } catch (SQLException e) {
+                    Log.e("DatabaseConnection", "Error connecting to database", e);
+                }
+            }
+        });
+
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String id = editTextId.getText().toString();
+                String name = editTextName.getText().toString();
+                String address = editTextAddress.getText().toString();
+
+                try {
+                    Connection connection = DatabaseHelper.getConnection();
+                    if (connection != null) {
+                        String sql = "UPDATE users SET name = ?, address = ? WHERE id = ?";
+                        PreparedStatement statement = connection.prepareStatement(sql);
+                        statement.setString(1, name);
+                        statement.setString(2, address);
+                        statement.setString(3, id);
+                        int rowsUpdated = statement.executeUpdate();
+                        if (rowsUpdated > 0) {
+                            Log.d("DatabaseUpdate", "A row was updated successfully!");
+                        }
+                    } else {
+                        Log.d("DatabaseConnection", "Connection failed!");
+                    }
+                } catch (SQLException e) {
+                    Log.e("DatabaseConnection", "Error connecting to database", e);
+                }
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String id = editTextId.getText().toString();
+
+                try {
+                    Connection connection = DatabaseHelper.getConnection();
+                    if (connection != null) {
+                        String sql = "DELETE FROM users WHERE id = ?";
+                        PreparedStatement statement = connection.prepareStatement(sql);
+                        statement.setString(1, id);
+                        int rowsDeleted = statement.executeUpdate();
+                        if (rowsDeleted > 0) {
+                            Log.d("DatabaseDelete", "A row was deleted successfully!");
                         }
                     } else {
                         Log.d("DatabaseConnection", "Connection failed!");
