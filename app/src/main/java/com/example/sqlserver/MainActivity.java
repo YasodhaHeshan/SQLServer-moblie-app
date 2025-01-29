@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                         statement.setString(3, address);
                         int rowsInserted = statement.executeUpdate();
                         if (rowsInserted > 0) {
-                            Log.d("DatabaseInsert", "A new row was inserted successfully!");
+                            Toast.makeText(MainActivity.this, "A new row was inserted successfully!", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Log.d("DatabaseConnection", "Connection failed!");
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                         statement.setString(3, id);
                         int rowsUpdated = statement.executeUpdate();
                         if (rowsUpdated > 0) {
-                            Log.d("DatabaseUpdate", "A row was updated successfully!");
+                            Toast.makeText(MainActivity.this, "A row was updated successfully!", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Log.d("DatabaseConnection", "Connection failed!");
@@ -134,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                         statement.setString(1, id);
                         int rowsDeleted = statement.executeUpdate();
                         if (rowsDeleted > 0) {
-                            Log.d("DatabaseDelete", "A row was deleted successfully!");
+                            Toast.makeText(MainActivity.this, "A row was deleted successfully!", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Log.d("DatabaseConnection", "Connection failed!");
